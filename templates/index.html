@@ -1647,7 +1647,7 @@
     </script>
     
     <script async defer 
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5_cKIlgLuJjOLyaoO9ULs5tg4YQ7-t3Q&libraries=places&callback=initGoogleMaps">
+        
     </script>
     
     <script type="module">
@@ -1657,15 +1657,7 @@
         import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
         import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, where, limit, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB8C5qTKNDsYAeOSka6eN6xE8xiL-M4OBI",
-            authDomain: "mw25-b5932.firebaseapp.com",
-            projectId: "mw25-b5932",
-            storageBucket: "mw25-b5932.firebasestorage.app",
-            messagingSenderId: "1022172128839",
-            appId: "1:1022172128839:web:d8692a1ac5b68803f3f362",
-            measurementId: "G-EYVFND4P88"
-        };
+
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
