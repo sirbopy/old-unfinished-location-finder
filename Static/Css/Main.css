@@ -1,0 +1,381 @@
+/* Main CSS file for Local Place Finder */
+/* This file contains shared styles across the application */
+
+/* You can move some styles here from index.html if desired */
+/* For now, we'll just add some basic resets */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background-color: #f4f4f9;
+    display: flex;
+    flex-direction: column;
+}
+
+nav {
+    background-color: #ff0000;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    padding: 5px 20px;
+    z-index: 1;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+nav li {
+    margin-left: 15px;
+}
+
+nav a {
+    text-decoration: none;
+    color: black;
+    padding: 5px 10px;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: #ddd;
+    border-radius: 5px;
+}
+
+nav li:first-child {
+    margin-right: auto;
+}
+
+.container {
+    flex: 1;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.popup input {
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+    max-width: 300px;
+}
+
+
+.popup input {
+    margin-bottom: 15px;
+}
+
+.popup button {
+    margin: 5px;
+}
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #ff0000;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: auto;
+        }
+      
+        button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            max-width: 300px;
+        }
+
+      
+        .popup, .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 50%;
+    z-index: 1000;
+}
+
+.overlay {
+    display: none; /* Hidden by default */
+    position: fixed; /* Covers the entire screen */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 999; /* Behind the popup */
+}
+
+.popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed positioning for popup */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Align center */
+    background-color: white;
+    width: 300px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow for visibility */
+    text-align: center;
+    z-index: 1000; /* Ensure popup is on top */
+}
+.sidebar {
+          width: 10%;
+          height: 100%; /* Adjust the height to match your content */
+          position: fixed;
+          top: 2.8%; /* Adjust the value to push the sidebar down */
+          left: 0;
+          background-color: #b31414;
+          padding: 20px;
+          z-index: 0;
+        }
+        .sidebar img {
+      width: 100%; /* Make images fit within the sidebar */
+      display: block;
+      margin-bottom: 10px; /* Add some spacing between images */
+    }
+    .sidebar-2 {
+              width: 10%;
+              height: 100%; /* Adjust the height to match your content */
+              position: fixed;
+              top: 2.8%; /* Adjust the value to push the sidebar down */
+              right: 0;
+              background-color: #b31414;
+              padding: 20px;
+              z-index: 0;
+            }
+        .sidebar-2 img {
+      width: 100%; /* Make images fit within the sidebar */
+      display: block;
+      margin-bottom: 10px; /* Add some spacing between images */
+    }
+
+    .swiper-container {
+        width: 80%;
+        max-width: 800px; /* Optional: Set a max width */
+        height: 60vh;
+        margin: 40px auto; /* Center the container with auto margins */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Swiper Slide */
+    .swiper-slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Remove fixed width to allow Swiper to control it */
+        height: 100%;
+    }
+
+    /* Slide Images */
+    .swiper-slide img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain; /* Use 'contain' to maintain aspect ratio without cropping */
+        border-radius: 10px; /* Optional: Add rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add a subtle shadow */
+    }
+
+    /* Slide Text */
+    .slide-text {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-size: 16px;
+        z-index: 10;
+        white-space: nowrap;
+    }
+
+    /* Navigation Arrows */
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: white;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 12px;
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s ease;
+    }
+
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 20px;
+    }
+
+    /* Image Popup */
+    .image-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1001;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 25px rgba(0,0,0,0.4);
+    }
+
+    .image-popup img {
+        max-width: 90vw;
+        max-height: 90vh;
+        border-radius: 5px;
+    }
+
+    /* Overlay for Popup */
+    #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+
+    /* Animation for welcome message */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Welcome back banner styling */
+    .welcome-back {
+        transition: opacity 0.5s;
+        border-left: 4px solid #ffc107;
+    }
+
+    .welcome-message {
+        line-height: 1.4;
+    }
+
+    .welcome-message p:first-child {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .swiper-container {
+            width: 95%;
+            height: 50vh;
+        }
+
+        .slide-text {
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            width: 36px;
+            height: 36px;
+            padding: 8px;
+        }
+
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            font-size: 18px;
+        }
+    }
+
+/* Fix for slideshow background visibility */
+.slideshow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+/* Add this if business cards are not displaying correctly */
+.business-card {
+    display: block; /* Ensure card is visible */
+    min-width: 300px; /* Ensure minimum width */
+}
+
+/* Ensure container has proper overflow handling */
+.business-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 20px 0;
+    gap: 20px;
+    min-height: 350px; /* Ensure minimum height for visibility */
+}
+
+/* Update user status banner to be visible by default */
+.user-status {
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    display: block; /* Changed from 'none' to 'block' */
+    border: 1px solid #e60000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000; /* Ensure it's above other elements */
+}

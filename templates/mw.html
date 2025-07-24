@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link href="{{ url_for('static', filename='css/Main.css')}}" rel= "stylesheet">
+<link rel="stylesheet"href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+<style>
+/* CSS styles */
+
+
+</style>
+<script type="module">
+  // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyB8C5qTKNDsYAeOSka6eN6xE8xiL-M4OBI",
+    authDomain: "mw25-b5932.firebaseapp.com", 
+    projectId: "mw25-b5932",
+    storageBucket: "mw25-b5932.firebasestorage.app",
+    messagingSenderId: "1022172128839",
+    appId: "1:1022172128839:web:d8692a1ac5b68803f3f362",
+    measurementId: "G-EYVFND4P88"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Sign up handler
+  document.getElementById("signUpBtn").addEventListener("click", async () => {
+    const email = document.getElementById("signUpEmail").value;
+    const password = document.getElementById("signUpPassword").value;
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      alert("Sign-up successful!");
+      togglePopup("signUpPopup", false);
+    } catch (error) {
+      console.error("Sign-up error:", error);
+      alert("Sign-up failed: " + error.message);
+    }
+  });
+</script>
+<script type="module">
+    window.auth = auth; // Make auth globally available from the previous initialization
+</script>
+
+<body>
+    
+    
+    </div>
+        </div>
+        <nav>
+        <ul>
+            <li><a href="#">MW</a></li>
+            <li><a href="#">Info</a></li>
+            <li><a href="#" id="openSignUp">Sign Up</a></li>
+            <li><a href="#" id="openSignIn">Sign In</a></li>
+        </ul>
+        </nav>
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="signUpPopup">
+        <h2>Sign Up</h2>
+        <input type="email" id="signUpEmail" placeholder="Email">
+        <input type="password" id="signUpPassword" placeholder="Password">
+        <button id="signUpBtn">Sign Up</button>
+        <button id="closeSignUp">Close</button>
+    </div>
+    <div class="popup" id="signInPopup">
+        <h2>Sign In</h2>
+        <input type="email" id="signInEmail" placeholder="Email">
+        <input type="password" id="signInPassword" placeholder="Password">
+        <button id="signInBtn">Sign In</button>
+        <button id="closeSignIn">Close</button>
+    </div>
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script type="module">
+    // Import Firebase auth
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+    
+    // Using auth instance from the earlier initialization
+
+    // Toggle Pop-ups
+    function togglePopup(popupId, show) {
+        const popup = document.getElementById(popupId);
+        const overlay = document.getElementById("overlay");
+
+        if (show) {
+            popup.style.display = "block";
+            overlay.style.display = "block";
+        } else {
+            popup.style.display = "none";
+            overlay.style.display = "none";
+        }
+    }
+
+    document.getElementById("openSignUp").addEventListener("click", () => togglePopup("signUpPopup", true));
+    document.getElementById("closeSignUp").addEventListener("click", () => togglePopup("signUpPopup", false));
+    document.getElementById("openSignIn").addEventListener("click", () => togglePopup("signInPopup", true));
+    document.getElementById("closeSignIn").addEventListener("click", () => togglePopup("signInPopup", false));
+
+    // Sign Up
+    document.getElementById("signUpBtn").addEventListener("click", async () => {
+    const email = document.getElementById("signUpEmail").value;
+    const password = document.getElementById("signUpPassword").value;
+
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        alert("Sign-up successful!");
+        togglePopup("signUpPopup", false);
+        console.log("User signed up:", userCredential.user);
+    } catch (error) {
+        console.error("Error signing up:", error);
+        alert("Sign-up failed: " + error.message);
+    }
+});
+
+    // Sign In
+    document.getElementById("signInBtn").addEventListener("click", async () => {
+    const email = document.getElementById("signInEmail").value;
+    const password = document.getElementById("signInPassword").value;
+
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        alert("Sign-in successful!");
+        togglePopup("signInPopup", false);
+        console.log("User signed in:", userCredential.user);
+    } catch (error) {
+        console.error("Error signing in:", error);
+        alert("Sign-in failed: " + error.message);
+    }
+});
+
+    // Initialize Swiper
+    var swiper = new Swiper('.swiper-container', {
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+    </script>
+<script type="module">
+    document.getElementById("signUpBtn").addEventListener("click", async () => {
+        const auth = window.auth; // Get global auth instance
+        const email = document.getElementById("signUpEmail").value;
+        const password = document.getElementById("signUpPassword").value;
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            alert("Sign-up successful!");
+            togglePopup("signUpPopup", false);
+        } catch (error) {
+            console.error("Error signing up:", error);
+            alert("Sign-up failed: " + error.message);
+        }
+    });
+</script>
+</div>
+</div>
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <img src="https://picsum.photos/800/600" alt="Slide 1">
+            <div class="slide-text">Caption 1</div>
+        </div>
+        <div class="swiper-slide">
+            <img src="https://picsum.photos/801/600" alt="Slide 2">
+            <div class="slide-text">Caption 2</div>
+        </div>
+        <div class="swiper-slide">
+            <img src="https://picsum.photos/802/600" alt="Slide 3">
+            <div class="slide-text">Caption 3</div>
+        </div>
+    </div>
+    <!-- Navigation arrows -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+<!-- Update your Swiper initialization script -->
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        loop: true,
+        slidesPerView: 1,  // Show only one slide at a time
+        spaceBetween: 0,   // No space between slides
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        keyboard: {
+            enabled: true,
+        },
+        effect: 'slide',   // Classic slide transition
+    });
+
+// Add click handler for images
+document.querySelectorAll('.swiper-slide img').forEach(img => {
+    img.addEventListener('click', function() {
+        const popup = document.getElementById('imagePopup');
+        popup.querySelector('img').src = this.src;
+        popup.style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    });
+});
+            function closeImagePopup() {
+                document.getElementById('imagePopup').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
+            }
+        
+            // Close popup when clicking overlay
+            document.getElementById('overlay').addEventListener('click', closeImagePopup);
+        </script>
+</div>
+<div class="sidebar">
+    <img src="{{ image4_url }}" alt="Image 4">
+    <img src="{{ image5_url }}" alt="Image 5">
+    <img src="{{ image6_url }}" alt="Image 6">
+  </div>
+</div>
+<div class="sidebar-2">
+    <img src="{{ image4_url }}" alt="Image 4">
+    <img src="{{ image5_url }}" alt="Image 5">
+    <img src="{{ image6_url }}" alt="Image 6">
+  </div>
+</div>
+<footer>
+    <div class="footer-content">
+        
+    
+    <!-- Image Popup -->
+    
+</footer>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- Include user analytics script before other scripts -->
+<script src="{{ url_for('static', filename='js/user-analytics.js') }}"></script>
+
+<!-- Include the Firebase core JS SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+<!-- Include our debug helper -->
+<script src="{{ url_for('static', filename='js/firebase-debug.js') }}"></script>
+
+<script>
+    // Force show user status
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Create a user status banner if it doesn't exist
+        let userStatusBanner = document.getElementById('userStatusBanner');
+        if (!userStatusBanner) {
+            userStatusBanner = document.createElement('div');
+            userStatusBanner.id = 'userStatusBanner';
+            userStatusBanner.className = 'user-status';
+            document.body.appendChild(userStatusBanner);
+        }
+        
+        userStatusBanner.style.display = 'block';
+        userStatusBanner.textContent = 'Initializing...';
+
+        // Get IP from our server endpoint
+        window.userIP = await getIpFromServer();
+        
+        // Initialize Firebase with explicit debugging
+        const firebaseApp = checkFirebaseConnection();
+
+        // Dispatch auth state event when user signs in or out
+        const handleAuthChange = (user) => {
+            const authEvent = new CustomEvent('auth_state_changed', {
+                detail: { user: user }
+            });
+            document.dispatchEvent(authEvent);
+        };
+        
+        // Set up auth state listener if Firebase is available
+        if (firebase && firebase.auth) {
+            firebase.auth().onAuthStateChanged(handleAuthChange);
+        }
+    });
+</script>
+
+<!-- Debug element to show captured data -->
+<div style="position: fixed; bottom: 10px; left: 10px; padding: 10px; 
+     background: rgba(255,255,255,0.9); border: 1px solid #ccc; font-size: 12px; 
+     max-width: 300px; max-height: 150px; overflow: auto; z-index: 9999; display: none;" 
+     id="analytics-debug">
+    <h4>Analytics Data</h4>
+    <div id="analytics-content"></div>
+    <button onclick="toggleAnalyticsDebug()">Toggle Analytics View</button>
+</div>
+
+<script>
+    function toggleAnalyticsDebug() {
+        const debugPanel = document.getElementById('analytics-debug');
+        const content = document.getElementById('analytics-content');
+        
+        if (debugPanel.style.display === 'none') {
+            debugPanel.style.display = 'block';
+            
+            // Show current analytics data
+            if (window.userAnalytics) {
+                content.innerHTML = '<pre>' + JSON.stringify({
+                    session: window.userAnalytics.sessionData,
+                    user: {
+                        ip: window.userAnalytics.userProfile.ip,
+                        location: window.userAnalytics.userProfile.location,
+                        device: window.userAnalytics.userProfile.device,
+                        browser: window.userAnalytics.userProfile.browser
+                    },
+                    auth: {
+                        isAuthenticated: window.userAnalytics.isAuthenticated,
+                        userId: window.userAnalytics.userId
+                    }
+                }, null, 2) + '</pre>';
+            } else {
+                content.innerHTML = 'Analytics not initialized yet';
+            }
+        } else {
+            debugPanel.style.display = 'none';
+        }
+    }
+    
+    // Add analytics debug button in the corner
+    document.addEventListener('DOMContentLoaded', function() {
+        const debugToggle = document.createElement('button');
+        debugToggle.textContent = 'Analytics Debug';
+        debugToggle.style.cssText = 'position:fixed;top:70px;right:10px;z-index:9999;font-size:10px;padding:5px;';
+        debugToggle.onclick = toggleAnalyticsDebug;
+        document.body.appendChild(debugToggle);
+    });
+</script>
+
+</body>
+</html>

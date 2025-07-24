@@ -1,0 +1,2364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino & Entertainment Finder | Find Your Next Adventure</title>
+    <link href="{{ url_for('static', filename='css/Main.css')}}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0c1016;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #f8f8f8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(10, 12, 20, 0.9), rgba(40, 10, 60, 0.9));
+            border-radius: 10px;
+            padding: 40px;
+            margin-top: 80px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        h1 {
+            color: #e8c547;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(232, 197, 71, 0.2);
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #dadada;
+        }
+
+        .search-container {
+            background: rgba(15, 15, 30, 0.9);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.3);
+            margin: 20px auto;
+            max-width: 700px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .search-box {
+            margin: 20px auto;
+            max-width: 600px;
+            position: relative;
+            display: flex;
+        }
+
+        .location-button {
+            background-color: #e8c547;
+            color: #0c1016;
+            padding: 12px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 2px;
+            transition: background-color 0.3s;
+        }
+
+        .location-button:hover {
+            background-color: #ffd700;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 15px;
+            border: 2px solid #e8c547;
+            border-radius: 0;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        button {
+            background-color: #e8c547;
+            color: #0c1016;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #ffd700;
+            transform: translateY(-2px);
+        }
+        
+        /* Category styling */
+        .venue-categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .category-card {
+            background: linear-gradient(135deg, rgba(25, 25, 50, 0.8), rgba(40, 10, 60, 0.8));
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            width: 120px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-card:hover, .category-card.selected {
+            transform: translateY(-5px);
+            background: linear-gradient(135deg, rgba(60, 40, 100, 0.8), rgba(40, 30, 70, 0.8));
+            border: 1px solid rgba(232, 197, 71, 0.3);
+            box-shadow: 0 5px 15px rgba(232, 197, 71, 0.2);
+        }
+        
+        .category-icon {
+            font-size: 2.5rem;
+            color: #e8c547;
+            margin-bottom: 10px;
+        }
+        
+        .category-name {
+            font-weight: 600;
+            color: #f8f8f8;
+        }
+        
+        /* Filter styling */
+        .filter-section {
+            background: rgba(15, 15, 30, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .filter-title {
+            color: #e8c547;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-title i {
+            margin-right: 10px;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .filter-item {
+            background: rgba(25, 25, 50, 0.7);
+            border-radius: 20px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .filter-item:hover, .filter-item.selected {
+            background-color: #e8c547;
+            color: #0c1016;
+            border: 1px solid #e8c547;
+        }
+        
+        .filter-item i {
+            margin-right: 5px;
+        }
+
+        /* Map styling */
+        .map-container {
+            height: 400px;
+            background: rgba(15, 15, 30, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin: 30px 0;
+        }
+        
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            background: rgba(15, 15, 30, 0.9);
+            border-radius: 5px;
+            z-index: 1;
+            border: 1px solid rgba(232, 197, 71, 0.3);
+        }
+        
+        .map-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .map-filter {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e8c547;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .map-filter.active {
+            background: #e8c547;
+            color: #0c1016;
+        }
+
+        /* Keep existing styles but update colors */
+        nav {
+            background: linear-gradient(90deg, #0c1016, rgba(40, 10, 60, 0.95));
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(232, 197, 71, 0.1);
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav li {
+            float: left;
+        }
+
+        nav li a {
+            display: block;
+            color: #f8f8f8;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        nav li a:hover {
+            background-color: rgba(232, 197, 71, 0.2);
+            color: #e8c547;
+        }
+
+        /* Update business cards to match the new theme */
+        .business-card {
+            flex: 0 0 300px;
+            background: linear-gradient(135deg, rgba(25, 25, 50, 0.95), rgba(40, 10, 60, 0.9));
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .business-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(232, 197, 71, 0.2);
+        }
+        
+        .business-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #e8c547;
+            margin-bottom: 5px;
+        }
+        
+        .business-cta {
+            display: inline-block;
+            background: #e8c547;
+            color: #0c1016;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .business-cta:hover {
+            background: #ffd700;
+        }
+        
+        .sponsored-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(232, 197, 71, 0.9);
+            color: #0c1016;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        /* Keep other existing styles as they are */
+        .place-details {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .place-address {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .place-coords {
+            color: #999;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .search-filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 10px;
+        }
+
+        .search-filters select, .search-filters input[type="number"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .search-suggestion {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 0 0 4px 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            position: absolute;
+            width: 70%;
+            z-index: 10;
+        }
+
+        .suggestion-item {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+        }
+
+        .feature {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            flex-basis: 30%;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature h3 {
+            color: #e60000;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            z-index: 300;
+            width: 300px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .popup input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .popup button {
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+
+        .slideshow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+
+        .featured-businesses {
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .featured-title {
+            color: #e60000;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .featured-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: #e60000;
+            margin: 10px auto;
+        }
+        
+        .business-carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 20px 0;
+            gap: 20px;
+        }
+        
+        .business-image {
+            height: 180px;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .business-info {
+            padding: 15px;
+        }
+        
+        .business-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .promotion-banner {
+            background: linear-gradient(135deg, #ff6b6b, #e60000);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+        
+        .user-status {
+            position: fixed;
+            top: 60px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            display: none; /* This is hiding the element */
+        }
+        
+        .session-timer {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .pac-container {
+            z-index: 1051 !important;
+        }
+
+        .advertise-section {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            margin: 40px auto;
+        }
+        
+        .advertise-intro {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .pricing-tiers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .pricing-tier {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            flex: 0 0 220px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .pricing-tier:hover {
+            transform: translateY(-5px);
+        }
+        
+        .featured-tier {
+            border: 2px solid #e60000;
+            padding: 30px 25px;
+            margin-top: -10px;
+        }
+        
+        .most-popular {
+            background: #e60000;
+            color: white;
+            padding: 5px 15px;
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .pricing-tier h3 {
+            color: #333;
+            font-size: 1.5rem;
+            margin: 0 0 5px;
+        }
+        
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e60000;
+            margin: 15px 0;
+        }
+        
+        .price span {
+            font-size: 1rem;
+            color: #999;
+        }
+        
+        .tier-description {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .tier-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px;
+            text-align: left;
+        }
+        
+        .tier-features li {
+            padding: 5px 0 5px 25px;
+            position: relative;
+        }
+        
+        .tier-features li::before {
+            content: "✓";
+            color: #e60000;
+            position: absolute;
+            left: 0;
+        }
+        
+        .select-tier-btn {
+            background-color: #e60000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        .select-tier-btn:hover {
+            background-color: #cc0000;
+        }
+        
+        .business-submission-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .card-details {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .expiry {
+            flex: 1;
+        }
+        
+        .cvv {
+            flex: 0 0 100px;
+        }
+        
+        .selected-plan {
+            margin: 30px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            border-left: 4px solid #e60000;
+        }
+        
+        .terms {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .terms input {
+            width: auto;
+            margin-top: 5px;
+            margin-right: 10px;
+        }
+        
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .cancel-btn {
+            background-color: #999;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 25px;
+            cursor: pointer;
+        }
+        
+        .submit-btn {
+            background-color: #e60000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .image-preview {
+            margin-top: 10px;
+            max-width: 300px;
+            max-height: 200px;
+            overflow: hidden;
+            border: 1px dashed #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+        }
+        
+        .submission-success {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .success-icon {
+            background-color: #4CAF50;
+            color: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 20px;
+        }
+        
+        .return-btn {
+            background-color: #e60000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 25px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <!-- Slides will be added dynamically -->
+    </div>
+    
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{{ url_for('mw') }}"><i class="fas fa-map-marked-alt"></i> Map Finder</a></li>
+            <li><a href="#" id="openSignUp"><i class="fas fa-user-plus"></i> Sign Up</a></li>
+            <li><a href="#" id="openSignIn"><i class="fas fa-sign-in-alt"></i> Sign In</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Discover Casinos & Entertainment</h1>
+            <p class="tagline">Find the best casinos, gaming halls, and entertainment venues near you</p>
+            
+            <div class="search-container">
+                <form action="{{ url_for('mw') }}" method="get" id="searchForm">
+                    <div class="search-box">
+                        <button type="button" id="getCurrentLocation" class="location-button" title="Use my current location">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </button>
+                        <input type="text" name="query" id="searchInput" placeholder="Search for casinos, gaming venues, or entertainment..." autocomplete="off">
+                        <button type="submit"><i class="fas fa-search"></i> Find</button>
+                    </div>
+                    
+                    <div id="searchSuggestions" class="search-suggestion"></div>
+                    <div id="placeDetails" class="place-details"></div>
+                    
+                    <input type="hidden" id="lat" name="lat" value="">
+                    <input type="hidden" id="lng" name="lng" value="">
+                    <input type="hidden" id="place_id" name="place_id" value="">
+                    
+                    <!-- Venue type selection -->
+                    <div class="venue-categories">
+                        <div class="category-card" data-category="casino">
+                            <div class="category-icon"><i class="fas fa-dice"></i></div>
+                            <div class="category-name">Casinos</div>
+                        </div>
+                        <div class="category-card" data-category="poker">
+                            <div class="category-icon"><i class="fas fa-chess-queen"></i></div>
+                            <div class="category-name">Poker Rooms</div>
+                        </div>
+                        <div class="category-card" data-category="bingo">
+                            <div class="category-icon"><i class="fas fa-th"></i></div>
+                            <div class="category-name">Bingo Halls</div>
+                        </div>
+                        <div class="category-card" data-category="sports_book">
+                            <div class="category-icon"><i class="fas fa-trophy"></i></div>
+                            <div class="category-name">Sports Books</div>
+                        </div>
+                        <div class="category-card" data-category="arcade">
+                            <div class="category-icon"><i class="fas fa-gamepad"></i></div>
+                            <div class="category-name">Arcades</div>
+                        </div>
+                        <div class="category-card" data-category="entertainment">
+                            <div class="category-icon"><i class="fas fa-ticket-alt"></i></div>
+                            <div class="category-name">Shows & Events</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Advanced filters -->
+                    <div class="filter-section">
+                        <div class="filter-title">
+                            <i class="fas fa-filter"></i> Refine Your Search
+                        </div>
+                        
+                        <div class="filter-group">
+                            <div class="filter-title" style="font-size: 0.9rem;">Rating:</div>
+                            <div class="filter-item" data-rating="3">3★ & Up</div>
+                            <div class="filter-item" data-rating="4">4★ & Up</div>
+                            <div class="filter-item" data-rating="4.5">4.5★ & Up</div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <div class="filter-title" style="font-size: 0.9rem;">Amenities:</div>
+                            <div class="filter-item" data-amenity="restaurant"><i class="fas fa-utensils"></i> Restaurant</div>
+                            <div class="filter-item" data-amenity="bar"><i class="fas fa-glass-martini-alt"></i> Bar</div>
+                            <div class="filter-item" data-amenity="hotel"><i class="fas fa-bed"></i> Hotel</div>
+                            <div class="filter-item" data-amenity="pool"><i class="fas fa-swimming-pool"></i> Pool</div>
+                            <div class="filter-item" data-amenity="entertainment"><i class="fas fa-music"></i> Live Entertainment</div>
+                            <div class="filter-item" data-amenity="parking"><i class="fas fa-parking"></i> Free Parking</div>
+                            <div class="filter-item" data-amenity="wheelchair"><i class="fas fa-wheelchair"></i> Accessible</div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <div class="filter-title" style="font-size: 0.9rem;">Distance:</div>
+                            <div class="filter-item" data-distance="5">Within 5 miles</div>
+                            <div class="filter-item" data-distance="10">Within 10 miles</div>
+                            <div class="filter-item" data-distance="25">Within 25 miles</div>
+                            <div class="filter-item" data-distance="50">Within 50 miles</div>
+                        </div>
+                        
+                        <input type="hidden" id="selectedCategory" name="category" value="">
+                        <input type="hidden" id="selectedRating" name="rating" value="">
+                        <input type="hidden" id="selectedAmenities" name="amenities" value="">
+                        <input type="hidden" id="selectedDistance" name="radius" value="">
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Interactive Map -->
+        <div class="map-container" id="mapContainer">
+            <div class="map-overlay">
+                <div class="map-filters">
+                    <div class="map-filter active" data-type="all">All</div>
+                    <div class="map-filter" data-type="casino">Casinos</div>
+                    <div class="map-filter" data-type="poker">Poker</div>
+                    <div class="map-filter" data-type="bingo">Bingo</div>
+                    <div class="map-filter" data-type="arcade">Arcades</div>
+                    <div class="map-filter" data-type="entertainment">Entertainment</div>
+                </div>
+            </div>
+            <div id="map"></div>
+        </div>
+
+        <!-- Featured Venues Section -->
+        <div class="featured-businesses">
+            <h2 class="featured-title">Top-Rated Entertainment Venues</h2>
+            
+            <div class="business-carousel" id="businessCarousel">
+                <!-- Business cards will be dynamically populated -->
+            </div>
+            
+            <div class="carousel-controls">
+                <button class="carousel-control" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-control" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3><i class="fas fa-dice"></i> Casino Games</h3>
+                <p>Discover casinos with your favorite games - from slots to blackjack and roulette</p>
+            </div>
+            <div class="feature">
+                <h3><i class="fas fa-hotel"></i> Resort Amenities</h3>
+                <p>Find entertainment venues with luxury accommodations, pools and spas</p>
+            </div>
+            <div class="feature">
+                <h3><i class="fas fa-utensils"></i> Dining Options</h3>
+                <p>Explore venues with fine dining, buffets, and specialty restaurants</p>
+            </div>
+        </div>
+
+        <!-- User-generated content section -->
+        <div id="userContentSection">
+            <h2>Explore Content</h2>
+            <div id="postForm">
+                <textarea id="postText" placeholder="What's on your mind?" maxlength="280"></textarea>
+                <input type="file" id="postVideo" accept="video/*">
+                <button id="submitPostBtn">Post</button>
+            </div>
+            <div id="postsContainer">
+                <!-- Posts and ads will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="user-status" id="userStatusBanner"></div>
+    <div class="session-timer" id="sessionTimer">Time on site: 00:00:00</div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="signUpPopup">
+        <h2>Sign Up</h2>
+        <input type="text" id="signUpUsername" placeholder="Username" required>
+        <input type="email" id="signUpEmail" placeholder="Email" required>
+        <input type="password" id="signUpPassword" placeholder="Password" required>
+        <button id="signUpBtn">Sign Up</button>
+        <button id="closeSignUp">Close</button>
+    </div>
+    <div class="popup" id="signInPopup">
+        <h2>Sign In</h2>
+        <input type="email" id="signInEmail" placeholder="Email">
+        <input type="password" id="signInPassword" placeholder="Password">
+        <button id="signInBtn">Sign In</button>
+        <button id="closeSignIn">Close</button>
+    </div>
+
+    <script>
+        function initGoogleMaps() {
+            console.log("Google Maps API loaded successfully");
+            if (window.initPlacesAutocomplete) {
+                window.initPlacesAutocomplete();
+            }
+            initMap(); // Initialize our casino map
+        }
+        
+        // Initialize the map for casino locations
+        function initMap() {
+            // Default to Las Vegas as our initial location
+            const defaultLocation = { lat: 36.1699, lng: -115.1398 };
+            
+            // Create the map
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: defaultLocation,
+                zoom: 12,
+                styles: [
+                    { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+                    { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+                    { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+                    {
+                        featureType: "administrative.locality",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#d59563" }],
+                    },
+                    {
+                        featureType: "poi",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#d59563" }],
+                    },
+                    {
+                        featureType: "poi.park",
+                        elementType: "geometry",
+                        stylers: [{ color: "#263c3f" }],
+                    },
+                    {
+                        featureType: "poi.park",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#6b9a76" }],
+                    },
+                    {
+                        featureType: "road",
+                        elementType: "geometry",
+                        stylers: [{ color: "#38414e" }],
+                    },
+                    {
+                        featureType: "road",
+                        elementType: "geometry.stroke",
+                        stylers: [{ color: "#212a37" }],
+                    },
+                    {
+                        featureType: "road",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#9ca5b3" }],
+                    },
+                    {
+                        featureType: "road.highway",
+                        elementType: "geometry",
+                        stylers: [{ color: "#746855" }],
+                    },
+                    {
+                        featureType: "road.highway",
+                        elementType: "geometry.stroke",
+                        stylers: [{ color: "#1f2835" }],
+                    },
+                    {
+                        featureType: "road.highway",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#f3d19c" }],
+                    },
+                    {
+                        featureType: "transit",
+                        elementType: "geometry",
+                        stylers: [{ color: "#2f3948" }],
+                    },
+                    {
+                        featureType: "transit.station",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#d59563" }],
+                    },
+                    {
+                        featureType: "water",
+                        elementType: "geometry",
+                        stylers: [{ color: "#17263c" }],
+                    },
+                    {
+                        featureType: "water",
+                        elementType: "labels.text.fill",
+                        stylers: [{ color: "#515c6d" }],
+                    },
+                    {
+                        featureType: "water",
+                        elementType: "labels.text.stroke",
+                        stylers: [{ color: "#17263c" }],
+                    },
+                ]
+            });
+            
+            // Try to get user's location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+                        
+                        map.setCenter(pos);
+                        
+                        // Add marker for current location
+                        new google.maps.Marker({
+                            position: pos,
+                            map: map,
+                            icon: {
+                                path: google.maps.SymbolPath.CIRCLE,
+                                fillColor: "#e8c547",
+                                fillOpacity: 0.7,
+                                strokeWeight: 1,
+                                strokeColor: "#FFFFFF",
+                                scale: 10
+                            },
+                            title: "Your Location"
+                        });
+                        
+                        // Save coordinates to form
+                        document.getElementById('lat').value = position.coords.latitude;
+                        document.getElementById('lng').value = position.coords.longitude;
+                        
+                        // Find nearby casino venues
+                        findNearbyCasinos(map, pos);
+                    },
+                    () => {
+                        // If location access is denied, use default location
+                        handleLocationError(map, defaultLocation);
+                    }
+                );
+            } else {
+                // Browser doesn't support geolocation
+                handleLocationError(map, defaultLocation);
+            }
+            
+            // Store map in window for later access
+            window.casinoMap = map;
+            
+            // Set up map filter functionality
+            setupMapFilters(map);
+        }
+        
+        function handleLocationError(map, defaultLocation) {
+            map.setCenter(defaultLocation);
+            
+            // Add a generic marker at the center
+            new google.maps.Marker({
+                position: defaultLocation,
+                map: map,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: "#cccccc",
+                    fillOpacity: 0.7,
+                    strokeWeight: 1,
+                    strokeColor: "#FFFFFF",
+                    scale: 10
+                },
+                title: "Default Location"
+            });
+            
+            // Find casinos in default location (Las Vegas)
+            findNearbyCasinos(map, defaultLocation);
+        }
+        
+        function findNearbyCasinos(map, location) {
+            const service = new google.maps.places.PlacesService(map);
+            
+            // For demonstration, we'll use a set of predefined casino types to search
+            const venueTypes = [
+                { type: 'casino', keyword: 'casino' },
+                { type: 'poker', keyword: 'poker room' },
+                { type: 'bingo', keyword: 'bingo hall' },
+                { type: 'arcade', keyword: 'arcade gaming' },
+                { type: 'entertainment', keyword: 'entertainment venue' }
+            ];
+            
+            // Perform searches for each venue type
+            venueTypes.forEach(venue => {
+                const request = {
+                    location: location,
+                    radius: 10000, // 10 km radius
+                    keyword: venue.keyword,
+                    type: ['casino', 'amusement_park', 'bowling_alley']
+                };
+                
+                service.nearbySearch(request, (results, status) => {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        for (let i = 0; i < results.length; i++) {
+                            createMarker(results[i], map, venue.type);
+                        }
+                        
+                        // Store results for filtering
+                        if (!window.casinoVenues) window.casinoVenues = [];
+                        window.casinoVenues = [...window.casinoVenues, ...results.map(r => ({...r, venueType: venue.type}))];
+                        
+                        // Populate business carousel with results
+                        updateFeaturedVenues(window.casinoVenues);
+                    }
+                });
+            });
+        }
+        
+        function createMarker(place, map, venueType) {
+            const marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location,
+                title: place.name,
+                icon: getMarkerIcon(venueType)
+            });
+            
+            marker.venueType = venueType;
+            
+            // Store all markers for filtering
+            if (!window.venueMarkers) window.venueMarkers = [];
+            window.venueMarkers.push(marker);
+            
+            const infowindow = new google.maps.InfoWindow();
+            
+            marker.addListener('click', () => {
+                const content = `
+                    <div style="padding: 10px; max-width: 300px;">
+                        <h3 style="margin-top: 0; color: #e8c547;">${place.name}</h3>
+                        <div style="margin: 5px 0;">${place.vicinity}</div>
+                        <div style="margin: 5px 0;">Rating: ${place.rating ? place.rating + '/5' : 'N/A'}</div>
+                        <button id="details-btn-${place.place_id}" style="
+                            background-color: #e8c547;
+                            color: #0c1016;
+                            border: none;
+                            padding: 8px 12px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            margin-top: 10px;
+                        ">View Details</button>
+                    </div>
+                `;
+                
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+                
+                // Add event listener after info window is opened
+                setTimeout(() => {
+                    const detailsBtn = document.getElementById(`details-btn-${place.place_id}`);
+                    if (detailsBtn) {
+                        detailsBtn.addEventListener('click', () => {
+                            getPlaceDetails(place.place_id, map, infowindow, marker);
+                        });
+                    }
+                }, 300);
+            });
+        }
+        
+        function getMarkerIcon(venueType) {
+            // Different colored markers for each venue type
+            const icons = {
+                'casino': {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: '#e8c547',
+                    fillOpacity: 0.8,
+                    strokeWeight: 1,
+                    strokeColor: '#FFFFFF',
+                    scale: 8
+                },
+                'poker': {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: '#4caf50',
+                    fillOpacity: 0.8,
+                    strokeWeight: 1,
+                    strokeColor: '#FFFFFF',
+                    scale: 8
+                },
+                'bingo': {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: '#2196f3',
+                    fillOpacity: 0.8,
+                    strokeWeight: 1,
+                    strokeColor: '#FFFFFF',
+                    scale: 8
+                },
+                'arcade': {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: '#ff9800',
+                    fillOpacity: 0.8,
+                    strokeWeight: 1,
+                    strokeColor: '#FFFFFF',
+                    scale: 8
+                },
+                'entertainment': {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: '#9c27b0',
+                    fillOpacity: 0.8,
+                    strokeWeight: 1,
+                    strokeColor: '#FFFFFF',
+                    scale: 8
+                },
+                'sports_book': {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: '#f44336',
+                    fillOpacity: 0.8,
+                    strokeWeight: 1,
+                    strokeColor: '#FFFFFF',
+                    scale: 8
+                }
+            };
+            
+            return icons[venueType] || icons['casino'];
+        }
+        
+        function getPlaceDetails(placeId, map, infowindow, marker) {
+            const service = new google.maps.places.PlacesService(map);
+            
+            service.getDetails({
+                placeId: placeId,
+                fields: ['name', 'rating', 'formatted_phone_number', 'formatted_address', 'website', 'opening_hours', 'review', 'photo']
+            }, (place, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    // Log this interaction to Firebase
+                    logVenueInteraction(place.name, placeId, 'details_view');
+                    
+                    // Generate photos HTML
+                    let photosHtml = '';
+                    if (place.photos && place.photos.length > 0) {
+                        photosHtml = `
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <img src="${place.photos[0].getUrl({maxWidth: 300, maxHeight: 200})}" 
+                                     style="max-width: 100%; border-radius: 4px;">
+                            </div>
+                        `;
+                    }
+                    
+                    // Generate opening hours HTML
+                    let hoursHtml = '';
+                    if (place.opening_hours && place.opening_hours.weekday_text) {
+                        hoursHtml = `
+                            <div style="margin-top: 10px;">
+                                <strong>Hours:</strong>
+                                <ul style="padding-left: 20px; margin: 5px 0;">
+                                    ${place.opening_hours.weekday_text.map(day => `<li>${day}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+                    
+                    // Create content for the info window
+                    const content = `
+                        <div style="padding: 10px; max-width: 350px;">
+                            <h3 style="margin-top: 0; color: #e8c547;">${place.name}</h3>
+                            ${photosHtml}
+                            <div style="margin: 5px 0;"><strong>Address:</strong> ${place.formatted_address}</div>
+                            <div style="margin: 5px 0;"><strong>Phone:</strong> ${place.formatted_phone_number || 'N/A'}</div>
+                            <div style="margin: 5px 0;"><strong>Rating:</strong> ${place.rating ? place.rating + '/5' : 'N/A'}</div>
+                            ${hoursHtml}
+                            <div style="margin-top: 10px;">
+                                ${place.website ? 
+                                    `<a href="${place.website}" target="_blank" style="
+                                        display: inline-block;
+                                        background-color: #e8c547;
+                                        color: #0c1016;
+                                        text-decoration: none;
+                                        padding: 8px 12px;
+                                        border-radius: 4px;
+                                        margin-right: 10px;
+                                    ">Visit Website</a>` : ''
+                                }
+                                <button id="directions-btn-${placeId}" style="
+                                    background-color: #e8c547;
+                                    color: #0c1016;
+                                    border: none;
+                                    padding: 8px 12px;
+                                    border-radius: 4px;
+                                    cursor: pointer;
+                                ">Get Directions</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    infowindow.setContent(content);
+                    
+                    // Add event listener for directions button
+                    setTimeout(() => {
+                        const directionsBtn = document.getElementById(`directions-btn-${placeId}`);
+                        if (directionsBtn) {
+                            directionsBtn.addEventListener('click', () => {
+                                // Open Google Maps directions in a new tab
+                                const url = `https://www.google.com/maps/dir/?api=1&destination=${place.formatted_address}&destination_place_id=${placeId}`;
+                                window.open(url, '_blank');
+                                
+                                // Log this interaction
+                                logVenueInteraction(place.name, placeId, 'get_directions');
+                            });
+                        }
+                    }, 300);
+                }
+            });
+        }
+        
+        function setupMapFilters(map) {
+            const filters = document.querySelectorAll('.map-filter');
+            
+            filters.forEach(filter => {
+                filter.addEventListener('click', () => {
+                    // Remove active class from all filters
+                    filters.forEach(f => f.classList.remove('active'));
+                    
+                    // Add active class to clicked filter
+                    filter.classList.add('active');
+                    
+                    const filterType = filter.getAttribute('data-type');
+                    
+                    // Filter markers
+                    if (window.venueMarkers) {
+                        window.venueMarkers.forEach(marker => {
+                            if (filterType === 'all' || marker.venueType === filterType) {
+                                marker.setVisible(true);
+                            } else {
+                                marker.setVisible(false);
+                            }
+                        });
+                    }
+                    
+                    // Log filter usage
+                    logUserActivity('filter_venues', { filterType });
+                });
+            });
+        }
+        
+        function updateFeaturedVenues(venues) {
+            const carousel = document.getElementById('businessCarousel');
+            if (!carousel || !venues || venues.length === 0) return;
+            
+            // Clear existing content
+            carousel.innerHTML = '';
+            
+            // Sort by rating (highest first)
+            const sortedVenues = [...venues].sort((a, b) => (b.rating || 0) - (a.rating || 0));
+            
+            // Take the top 5 venues
+            const topVenues = sortedVenues.slice(0, 5);
+            
+            // Create cards for each venue
+            topVenues.forEach(venue => {
+                const card = document.createElement('div');
+                card.className = 'business-card';
+                
+                // Prepare image URL if available
+                let imageUrl = '';
+                if (venue.photos && venue.photos.length > 0) {
+                    try {
+                        imageUrl = venue.photos[0].getUrl({ maxWidth: 300, maxHeight: 200 });
+                    } catch (e) {
+                        console.error("Error getting photo URL:", e);
+                        imageUrl = '';
+                    }
+                }
+                
+                card.innerHTML = `
+                    <div class="business-image" style="background-image: url('${imageUrl}'); 
+                         ${!imageUrl ? 'background-color: #1e2130; display: flex; align-items: center; justify-content: center;' : ''}">
+                        ${!imageUrl ? `<i class="fas fa-dice" style="font-size: 3rem; color: #e8c547;"></i>` : ''}
+                    </div>
+                    <div class="business-info">
+                        <div class="business-name">${venue.name}</div>
+                        <div style="color: #e8c547;">${'★'.repeat(Math.round(venue.rating || 0))} ${venue.rating || 'No rating'}</div>
+                        <div style="color: #dadada; margin: 10px 0; font-size: 0.9rem;">${venue.vicinity || ''}</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: #a0a0a0; font-size: 0.8rem;">${venue.venueType || 'entertainment'}</span>
+                            <button class="venue-details-btn" data-place-id="${venue.place_id}" style="
+                                background-color: #e8c547;
+                                color: #0c1016;
+                                border: none;
+                                padding: 8px 12px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                font-size: 0.9rem;
+                            ">View Details</button>
+                        </div>
+                    </div>
+                `;
+                
+                carousel.appendChild(card);
+            });
+            
+            // Add event listeners to detail buttons
+            document.querySelectorAll('.venue-details-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const placeId = btn.getAttribute('data-place-id');
+                    const venue = venues.find(v => v.place_id === placeId);
+                    
+                    if (venue) {
+                        // Center map on this venue
+                        window.casinoMap.setCenter(venue.geometry.location);
+                        window.casinoMap.setZoom(15);
+                        
+                        // Find and click the corresponding marker
+                        const marker = window.venueMarkers.find(m => 
+                            m.getPosition().lat() === venue.geometry.location.lat() && 
+                            m.getPosition().lng() === venue.geometry.location.lng()
+                        );
+                        
+                        if (marker) {
+                            google.maps.event.trigger(marker, 'click');
+                        }
+                        
+                        // Log the interaction
+                        logVenueInteraction(venue.name, venue.place_id, 'card_details_click');
+                    }
+                });
+            });
+        }
+        
+        function logVenueInteraction(venueName, venueId, interactionType) {
+            // Track using our enhanced user analytics system if available
+            if (window.userAnalytics) {
+                window.userAnalytics.logEvent('venue_interaction', {
+                    venueName,
+                    venueId,
+                    interactionType,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Also track as casino preference click
+                window.userAnalytics.logCasinoPreference('click', venueName);
+            }
+            // Fall back to original logging function if available
+            else if (typeof logUserActivity === 'function') {
+                logUserActivity('venue_interaction', {
+                    venueName,
+                    venueId,
+                    interactionType
+                });
+            }
+        }
+
+        // Setup category selection
+        document.addEventListener('DOMContentLoaded', () => {
+            const categoryCards = document.querySelectorAll('.category-card');
+            const selectedCategoryInput = document.getElementById('selectedCategory');
+            
+            categoryCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const category = card.getAttribute('data-category');
+                    
+                    // Toggle selected class
+                    if (card.classList.contains('selected')) {
+                        card.classList.remove('selected');
+                        selectedCategoryInput.value = '';
+                    } else {
+                        // Remove selection from all cards
+                        categoryCards.forEach(c => c.classList.remove('selected'));
+                        
+                        // Select this card
+                        card.classList.add('selected');
+                        selectedCategoryInput.value = category;
+                    }
+                    
+                    // Log this selection
+                    logUserActivity('category_selection', { 
+                        category: selectedCategoryInput.value || 'none'
+                    });
+                });
+            });
+            
+            // Setup filter items
+            const filterItems = document.querySelectorAll('.filter-item');
+            const ratingInput = document.getElementById('selectedRating');
+            const amenitiesInput = document.getElementById('selectedAmenities');
+            const distanceInput = document.getElementById('selectedDistance');
+            
+            filterItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Check what type of filter this is
+                    if (item.hasAttribute('data-rating')) {
+                        // Handle rating filters (single selection)
+                        const rating = item.getAttribute('data-rating');
+                        
+                        // Toggle selection
+                        if (item.classList.contains('selected')) {
+                            item.classList.remove('selected');
+                            ratingInput.value = '';
+                        } else {
+                            // Remove selection from other rating filters
+                            document.querySelectorAll('.filter-item[data-rating]').forEach(
+                                f => f.classList.remove('selected')
+                            );
+                            
+                            item.classList.add('selected');
+                            ratingInput.value = rating;
+                        }
+                    } 
+                    else if (item.hasAttribute('data-amenity')) {
+                        // Handle amenity filters (multiple selection)
+                        const amenity = item.getAttribute('data-amenity');
+                        
+                        // Toggle selection
+                        if (item.classList.contains('selected')) {
+                            item.classList.remove('selected');
+                            
+                            // Remove from selected amenities
+                            const selectedAmenities = amenitiesInput.value
+                                .split(',')
+                                .filter(a => a && a !== amenity);
+                            
+                            amenitiesInput.value = selectedAmenities.join(',');
+                        } else {
+                            item.classList.add('selected');
+                            
+                            // Add to selected amenities
+                            let selectedAmenities = amenitiesInput.value.split(',').filter(a => a);
+                            selectedAmenities.push(amenity);
+                            amenitiesInput.value = selectedAmenities.join(',');
+                        }
+                    }
+                    else if (item.hasAttribute('data-distance')) {
+                        // Handle distance filters (single selection)
+                        const distance = item.getAttribute('data-distance');
+                        
+                        // Toggle selection
+                        if (item.classList.contains('selected')) {
+                            item.classList.remove('selected');
+                            distanceInput.value = '';
+                        } else {
+                            // Remove selection from other distance filters
+                            document.querySelectorAll('.filter-item[data-distance]').forEach(
+                                f => f.classList.remove('selected')
+                            );
+                            
+                            item.classList.add('selected');
+                            distanceInput.value = distance;
+                        }
+                    }
+                    
+                    // Log filter changes
+                    logUserActivity('filter_change', {
+                        rating: ratingInput.value,
+                        amenities: amenitiesInput.value,
+                        distance: distanceInput.value
+                    });
+                });
+            });
+        });
+    </script>
+    
+    <script async defer 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5_cKIlgLuJjOLyaoO9ULs5tg4YQ7-t3Q&libraries=places&callback=initGoogleMaps">
+    </script>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        import { getRemoteConfig, getValue, fetchAndActivate } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-remote-config.js";
+        import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, where, limit, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB8C5qTKNDsYAeOSka6eN6xE8xiL-M4OBI",
+            authDomain: "mw25-b5932.firebaseapp.com",
+            projectId: "mw25-b5932",
+            storageBucket: "mw25-b5932.firebasestorage.app",
+            messagingSenderId: "1022172128839",
+            appId: "1:1022172128839:web:d8692a1ac5b68803f3f362",
+            measurementId: "G-EYVFND4P88"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        
+        let sessionStartTime = new Date();
+        let userIP = "unknown";
+        let currentUser = null;
+        let sessionId = Math.random().toString(36).substring(2, 15);
+        let isDataLoaded = false; // Track if data is fully loaded
+        let pageLoadPromises = []; // Store promises to wait for
+        
+        const userState = {
+            ipAddress: null,
+            previousSessions: [],
+            totalVisits: 0,
+            totalTimeSpent: 0, // in seconds
+            lastVisitTimestamp: null,
+            frequentSearches: {},
+            preferredCategories: {}
+        };
+
+        function createLoadingOverlay() {
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.id = 'dataLoadingOverlay';
+            loadingOverlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(255, 255, 255, 0.8);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                transition: opacity 0.5s;
+            `;
+            
+            const spinner = document.createElement('div');
+            spinner.style.cssText = `
+                width: 50px;
+                height: 50px;
+                border: 5px solid #f3f3f3;
+                border-top: 5px solid #e60000;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin-bottom: 20px;
+            `;
+            
+            const loadingText = document.createElement('p');
+            loadingText.textContent = 'Loading your personalized experience...';
+            loadingText.style.cssText = 'font-weight: bold; color: #e60000;';
+            
+            loadingOverlay.appendChild(spinner);
+            loadingOverlay.appendChild(loadingText);
+            document.body.appendChild(loadingOverlay);
+            
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            return {
+                hide: () => {
+                    loadingOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingOverlay.remove();
+                    }, 500);
+                }
+            };
+        }
+
+        async function getUserIP() {
+            const ipPromise = new Promise(async (resolve) => {
+                try {
+                    const response = await fetch('https://api.ipify.org?format=json');
+                    const data = await response.json();
+                    userIP = data.ip;
+                    userState.ipAddress = userIP;
+                    updateUserStatus();
+                    
+                    await loadPreviousUserSessions(userIP);
+                    
+                    resolve(userIP);
+                } catch (error) {
+                    console.error("Error fetching IP:", error);
+                    resolve("unknown");
+                }
+            });
+            
+            pageLoadPromises.push(ipPromise);
+            return ipPromise;
+        }
+        
+        async function loadPreviousUserSessions(ipAddress) {
+            if (!ipAddress || ipAddress === "unknown") return;
+            
+            try {
+                const sessionsQuery = query(
+                    collection(db, "user_logs"),
+                    where("ipAddress", "==", ipAddress),
+                    where("action", "==", "page_view"),
+                    orderBy("timestamp", "desc"),
+                    limit(50)
+                );
+                
+                const querySnapshot = await getDocs(sessionsQuery);
+                const sessions = [];
+                let totalTime = 0;
+                const searches = {};
+                const categories = {};
+                
+                querySnapshot.forEach((doc) => {
+                    const session = doc.data();
+                    
+                    if (session.sessionDuration) {
+                        sessions.push({
+                            sessionId: session.sessionId,
+                            timestamp: session.timestamp,
+                            duration: session.sessionDuration
+                        });
+                        
+                        totalTime += session.sessionDuration;
+                    }
+                    
+                    if (!userState.lastVisitTimestamp || 
+                        (session.timestamp && session.timestamp.seconds > userState.lastVisitTimestamp)) {
+                        userState.lastVisitTimestamp = session.timestamp?.seconds;
+                    }
+                });
+                
+                const searchQuery = query(
+                    collection(db, "user_logs"),
+                    where("ipAddress", "==", ipAddress),
+                    where("action", "==", "search"),
+                    limit(100)
+                );
+                
+                const searchSnapshot = await getDocs(searchQuery);
+                
+                searchSnapshot.forEach((doc) => {
+                    const search = doc.data();
+                    
+                    if (search.searchQuery) {
+                        searches[search.searchQuery] = (searches[search.searchQuery] || 0) + 1;
+                    }
+                    
+                    if (search.category) {
+                        categories[search.category] = (categories[search.category] || 0) + 1;
+                    }
+                });
+                
+                userState.previousSessions = sessions;
+                userState.totalVisits = sessions.length;
+                userState.totalTimeSpent = totalTime;
+                userState.frequentSearches = searches;
+                userState.preferredCategories = categories;
+                
+                logUserActivity('user_history_combined', {
+                    totalVisits: sessions.length,
+                    totalTimeSpent: totalTime,
+                    topSearches: Object.keys(searches).slice(0, 5),
+                    preferredCategories: Object.keys(categories).slice(0, 3)
+                });
+                
+                console.log("User history combined:", userState);
+                
+            } catch (error) {
+                console.error("Error loading previous sessions:", error);
+            }
+        }
+
+        async function logUserActivity(action, details = {}) {
+            try {
+                const logData = {
+                    timestamp: serverTimestamp(),
+                    sessionId: sessionId,
+                    ipAddress: userIP,
+                    action: action,
+                    isLoggedIn: !!currentUser,
+                    userEmail: currentUser ? currentUser.email : null,
+                    sessionDuration: Math.floor((new Date() - sessionStartTime) / 1000),
+                    totalVisits: userState.totalVisits,
+                    visitIndex: userState.totalVisits + 1,
+                    returning: userState.totalVisits > 0,
+                    ...details
+                };
+                
+                try {
+                    const ipLogsCollection = collection(db, "ip_logs", userIP || "unknown", "activities");
+                    
+                    await Promise.all([
+                        addDoc(collection(db, "user_logs"), logData),
+                        addDoc(ipLogsCollection, logData)
+                    ]);
+                    
+                    console.log(`Logged activity: ${action}`);
+                } catch (firestoreError) {
+                    console.warn("Firebase logging error:", firestoreError.message);
+                    const localLogs = JSON.parse(localStorage.getItem('activityLogs') || '[]');
+                    localLogs.push({...logData, timestamp: new Date().toISOString()});
+                    localStorage.setItem('activityLogs', JSON.stringify(localLogs));
+                }
+                
+                try {
+                    logEvent(analytics, action, logData);
+                } catch (analyticsError) {
+                    console.warn("Analytics logging error:", analyticsError.message);
+                }
+            } catch (error) {
+                console.error("Error in logUserActivity:", error);
+            }
+        }
+        
+        async function initSlideshow() {
+            try {
+                await fetchAndActivate(remoteConfig);
+                
+                const slidesConfig = getValue(remoteConfig, 'slideshow_images');
+                
+                if (slidesConfig._value) {
+                    try {
+                        slides = JSON.parse(slidesConfig._value);
+                    } catch (e) {
+                        console.error("Error parsing slideshow images:", e);
+                        slides = defaultSlides;
+                    }
+                } else {
+                    slides = defaultSlides;
+                }
+                
+                const correctedSlides = slides.map(slide => {
+                    if (slide.startsWith('/static')) {
+                        return slide;
+                    }
+                    return slide;
+                });
+                
+                const slideshowContainer = document.querySelector('.slideshow-container');
+                if (!slideshowContainer) {
+                    console.error("Slideshow container not found");
+                    return;
+                }
+                
+                slideshowContainer.innerHTML = '';
+                
+                console.log("Adding slideshow images:", correctedSlides);
+                
+                correctedSlides.forEach((imageUrl, index) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'slide';
+                    if (index === 0) slide.classList.add('active');
+                    
+                    const testImg = new Image();
+                    testImg.onload = () => {
+                        slide.style.backgroundImage = `url('${imageUrl}')`;
+                    };
+                    testImg.onerror = () => {
+                        console.warn(`Failed to load slide image: ${imageUrl}`);
+                        slide.style.backgroundColor = "#e60000";
+                        slide.innerHTML = '<div style="padding: 20px; color: white;">Discover Amazing Places</div>';
+                    };
+                    testImg.src = imageUrl;
+                    
+                    slideshowContainer.appendChild(slide);
+                });
+                
+                if (slideshowContainer.children.length > 0) {
+                    setInterval(nextSlide, 5000);
+                } else {
+                    const defaultSlide = document.createElement('div');
+                    defaultSlide.className = 'slide active';
+                    defaultSlide.style.backgroundColor = "#e60000";
+                    defaultSlide.innerHTML = '<div style="padding: 20px; color: white; text-align: center;">Welcome to Local Place Finder</div>';
+                    slideshowContainer.appendChild(defaultSlide);
+                }
+            } catch (error) {
+                console.error("Error in slideshow initialization:", error);
+                
+                const slideshowContainer = document.querySelector('.slideshow-container');
+                if (slideshowContainer) {
+                    const emergencySlide = document.createElement('div');
+                    emergencySlide.className = 'slide active';
+                    emergencySlide.style.backgroundColor = "#e60000";
+                    emergencySlide.innerHTML = '<div style="padding: 20px; color: white; text-align: center;">Welcome to Local Place Finder</div>';
+                    slideshowContainer.appendChild(emergencySlide);
+                }
+            }
+        }
+
+        function loadFeaturedBusinesses() {
+            console.log("Loading featured businesses");
+            const carousel = document.getElementById('businessCarousel');
+            if (!carousel) {
+                console.error("Business carousel element not found");
+                return;
+            }
+            
+            carousel.innerHTML = '';
+            
+            const featuredBusinesses = [
+                {
+                    id: "business1",
+                    name: "Riverside Grill",
+                    description: "Award-winning waterfront restaurant with spectacular views and fresh local cuisine.",
+                    image: "/static/images/business1.jpg",
+                    rating: 4.8,
+                    category: "restaurant",
+                    sponsored: true,
+                    link: "#"
+                },
+                {
+                    id: "business2",
+                    name: "Mountain View Hotel",
+                    description: "Luxury accommodations with breathtaking mountain views and world-class amenities.",
+                    image: "/static/images/business2.jpg",
+                    rating: 4.9,
+                    category: "hotel",
+                    sponsored: true,
+                    link: "#"
+                },
+                {
+                    id: "business3",
+                    name: "Urban Coffee Co.",
+                    description: "Artisan coffee shop featuring locally roasted beans and homemade pastries.",
+                    image: "/static/images/business3.jpg",
+                    rating: 4.7,
+                    category: "cafe",
+                    sponsored: false,
+                    link: "#"
+                }
+            ];
+
+            console.log(`Adding ${featuredBusinesses.length} featured businesses`);
+            
+            featuredBusinesses.forEach(business => {
+                try {
+                    const card = document.createElement('div');
+                    card.className = 'business-card';
+                    
+                    const imageDiv = document.createElement('div');
+                    imageDiv.className = 'business-image';
+                    
+                    const img = new Image();
+                    img.onload = function() {
+                        imageDiv.style.backgroundImage = `url('${business.image}')`;
+                    };
+                    img.onerror = function() {
+                        imageDiv.style.backgroundColor = '#f0f0f0';
+                        imageDiv.style.display = 'flex';
+                        imageDiv.style.alignItems = 'center';
+                        imageDiv.style.justifyContent = 'center';
+                        imageDiv.innerHTML = '<span style="font-size: 3rem; color: #ccc;">🏢</span>';
+                    };
+                    img.src = business.image;
+                    
+                    card.appendChild(imageDiv);
+                    
+                    if (business.sponsored) {
+                        const sponsoredTag = document.createElement('div');
+                        sponsoredTag.className = 'sponsored-tag';
+                        sponsoredTag.textContent = 'Sponsored';
+                        card.appendChild(sponsoredTag);
+                    }
+                    
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'business-info';
+                    
+                    const nameDiv = document.createElement('div');
+                    nameDiv.className = 'business-name';
+                    nameDiv.textContent = business.name;
+                    
+                    const ratingDiv = document.createElement('div');
+                    ratingDiv.className = 'business-rating';
+                    ratingDiv.textContent = `★ ${business.rating}`;
+                    
+                    const descDiv = document.createElement('div');
+                    descDiv.className = 'business-description';
+                    descDiv.textContent = business.description;
+                    
+                    const ctaLink = document.createElement('a');
+                    ctaLink.href = business.link;
+                    ctaLink.className = 'business-cta';
+                    ctaLink.dataset.businessId = business.id;
+                    ctaLink.textContent = 'View Details';
+                    
+                    infoDiv.appendChild(nameDiv);
+                    infoDiv.appendChild(ratingDiv);
+                    infoDiv.appendChild(descDiv);
+                    infoDiv.appendChild(ctaLink);
+                    
+                    card.appendChild(infoDiv);
+                    
+                    carousel.appendChild(card);
+                    
+                    ctaLink.addEventListener('click', function() {
+                        logUserActivity('business_click', {
+                            businessId: business.id,
+                            businessName: business.name,
+                            isSponsored: business.sponsored
+                        });
+                    });
+                } catch (error) {
+                    console.error(`Error creating business card for ${business.name}:`, error);
+                }
+            });
+            
+            if (carousel.children.length === 0) {
+                const fallbackCard = document.createElement('div');
+                fallbackCard.className = 'business-card';
+                fallbackCard.innerHTML = `
+                    <div class="business-image" style="background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 3rem; color: #ccc;">🏢</span>
+                    </div>
+                    <div class="business-info">
+                        <div class="business-name">Featured Businesses</div>
+                        <div class="business-description">Check back soon for featured local businesses.</div>
+                    </div>
+                `;
+                carousel.appendChild(fallbackCard);
+            }
+            
+            console.log(`Successfully added ${carousel.children.length} business cards`);
+        }
+
+        function initCarousel() {
+            const carousel = document.getElementById('businessCarousel');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (!carousel) {
+                console.error("Business carousel element not found");
+                return;
+            }
+            
+            if (!prevBtn || !nextBtn) {
+                console.error("Carousel navigation buttons not found");
+                return;
+            }
+            
+            carousel.scrollLeft = 0;
+            
+            prevBtn.addEventListener('click', () => {
+                carousel.scrollBy({
+                    left: -320,
+                    behavior: 'smooth'
+                });
+                logUserActivity('carousel_navigation', { direction: 'prev' });
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                carousel.scrollBy({
+                    left: 320,
+                    behavior: 'smooth'
+                });
+                logUserActivity('carousel_navigation', { direction: 'next' });
+            });
+        }
+        
+        async function initializeApp() {
+            const loadingOverlay = createLoadingOverlay();
+            
+            try {
+                window.defaultSlides = [
+                    "/static/images/travel1.jpg",
+                    "/static/images/travel2.jpg",
+                    "/static/images/travel3.jpg"
+                ];
+                
+                const ipPromise = getUserIP();
+                const slideshowPromise = initSlideshow();
+                
+                pageLoadPromises.push(ipPromise);
+                pageLoadPromises.push(slideshowPromise);
+                
+                await Promise.allSettled(pageLoadPromises);
+                
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                isDataLoaded = true;
+                
+                updateSessionTimer();
+                loadFeaturedBusinesses();
+                initCarousel(); 
+                initBusinessAdvertisingForm();
+                
+                const locationButton = document.getElementById('getCurrentLocation');
+                if (locationButton) {
+                    locationButton.addEventListener('click', getCurrentLocation);
+                }
+                
+                personalizeUserExperience();
+                
+                logUserActivity('page_fully_loaded', { 
+                    page: 'index',
+                    referrer: document.referrer,
+                    hasAdvertising: true,
+                    deviceType: getDeviceType(),
+                    screenSize: `${window.innerWidth}x${window.innerHeight}`
+                });
+                
+                loadingOverlay.hide();
+            } catch (error) {
+                console.error("Error during app initialization:", error);
+                
+                try {
+                    loadFeaturedBusinesses();
+                    initCarousel();
+                } catch (e) {
+                    console.error("Emergency initialization failed:", e);
+                }
+                
+                loadingOverlay.hide();
+            }
+        }
+        
+        window.addEventListener('load', () => {
+            initializeApp().catch(error => {
+                console.error("Failed to initialize application:", error);
+            });
+        });
+
+        function updateUserStatus() {
+            const userStatusBanner = document.getElementById('userStatusBanner');
+            if (!userStatusBanner) return;
+            
+            let statusText = '';
+            
+            // Add IP address if available
+            if (userIP && userIP !== 'unknown') {
+                statusText += `IP: ${userIP} | `;
+            }
+            
+            // Add login status
+            if (currentUser) {
+                statusText += `Logged in as: ${currentUser.email}`;
+            } else {
+                statusText += 'Not logged in';
+            }
+            
+            userStatusBanner.textContent = statusText;
+            userStatusBanner.style.display = 'block'; // Make visible
+            
+            console.log("Updated user status banner:", statusText);
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            updateUserStatus(); // Add this line
+            
+            if (user) {
+                console.log("User is signed in:", user.email);
+                logUserActivity('user_signed_in');
+            } else {
+                console.log("User is signed out");
+            }
+        });
+    </script>
+
+    <!-- Debug Panel -->
+    <div style="position: fixed; bottom: 40px; left: 10px; background-color: rgba(255,255,255,0.9); 
+         padding: 10px; border-radius: 5px; border: 1px solid #ccc; max-width: 400px; 
+         max-height: 200px; overflow: auto; font-size: 12px; z-index: 9999;" id="firebase-debug">
+        <h4>Connection Diagnostics</h4>
+        <div>Client IP from server: {{ client_ip }}</div>
+    </div>
+
+    <!-- Include the Firebase core JS SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+    <!-- Include user analytics script before other scripts -->
+    <script src="{{ url_for('static', filename='js/user-analytics.js') }}"></script>
+
+    <!-- Include our debug helper -->
+    <script src="{{ url_for('static', filename='js/firebase-debug.js') }}"></script>
+
+    <script>
+        // Force show user status
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Force banner to be visible
+            const userStatusBanner = document.getElementById('userStatusBanner');
+            if (userStatusBanner) {
+                userStatusBanner.style.display = 'block';
+                userStatusBanner.textContent = 'Initializing...';
+            }
+
+            // Get IP from our server endpoint
+            window.userIP = await getIpFromServer();
+            
+            // Initialize Firebase with explicit debugging
+            const firebaseApp = checkFirebaseConnection();
+            
+            // Check every second if user status is visible
+            let checkCount = 0;
+            const statusCheck = setInterval(() => {
+                const banner = document.getElementById('userStatusBanner');
+                if (banner) {
+                    console.log("User status visibility:", banner.style.display);
+                    if (banner.style.display === 'none') {
+                        banner.style.display = 'block';
+                        console.log("Forced user status banner visibility");
+                    }
+                }
+                
+                checkCount++;
+                if (checkCount > 10) clearInterval(statusCheck);
+            }, 1000);
+
+            // Dispatch auth state event when user signs in or out
+            const handleAuthChange = (user) => {
+                const authEvent = new CustomEvent('auth_state_changed', {
+                    detail: { user: user }
+                });
+                document.dispatchEvent(authEvent);
+                
+                // Track additional user data
+                if (user && window.userAnalytics) {
+                    window.userAnalytics.logEvent('user_profile_data', {
+                        email_verified: user.emailVerified,
+                        provider_id: user.providerId,
+                        last_login_at: user.metadata?.lastSignInTime || 'unknown',
+                        created_at: user.metadata?.creationTime || 'unknown'
+                    });
+                }
+            };
+            
+            // Set up auth state listener if Firebase is available
+            if (firebase && firebase.auth) {
+                firebase.auth().onAuthStateChanged(handleAuthChange);
+            }
+        });
+    </script>
+
+    <!-- Debug element to show captured data -->
+    <div style="position: fixed; bottom: 10px; left: 10px; padding: 10px; 
+         background: rgba(255,255,255,0.9); border: 1px solid #ccc; font-size: 12px; 
+         max-width: 300px; max-height: 150px; overflow: auto; z-index: 9999; display: none;" 
+         id="analytics-debug">
+        <h4>Analytics Data</h4>
+        <div id="analytics-content"></div>
+        <button onclick="toggleAnalyticsDebug()">Toggle Analytics View</button>
+    </div>
+
+    <script>
+        function toggleAnalyticsDebug() {
+            const debugPanel = document.getElementById('analytics-debug');
+            const content = document.getElementById('analytics-content');
+            
+            if (debugPanel.style.display === 'none') {
+                debugPanel.style.display = 'block';
+                
+                // Show current analytics data
+                if (window.userAnalytics) {
+                    content.innerHTML = '<pre>' + JSON.stringify({
+                        session: window.userAnalytics.sessionData,
+                        user: {
+                            ip: window.userAnalytics.userProfile.ip,
+                            location: window.userAnalytics.userProfile.location,
+                            device: window.userAnalytics.userProfile.device,
+                            browser: window.userAnalytics.userProfile.browser
+                        },
+                        searches: window.userAnalytics.sessionData.searches,
+                        auth: {
+                            isAuthenticated: window.userAnalytics.isAuthenticated,
+                            userId: window.userAnalytics.userId
+                        }
+                    }, null, 2) + '</pre>';
+                } else {
+                    content.innerHTML = 'Analytics not initialized yet';
+                }
+            } else {
+                debugPanel.style.display = 'none';
+            }
+        }
+        
+        // Add analytics debug button in the corner
+        document.addEventListener('DOMContentLoaded', function() {
+            const debugToggle = document.createElement('button');
+            debugToggle.textContent = 'Analytics Debug';
+            debugToggle.style.cssText = 'position:fixed;top:70px;right:10px;z-index:9999;font-size:10px;padding:5px;';
+            debugToggle.onclick = toggleAnalyticsDebug;
+            document.body.appendChild(debugToggle);
+        });
+    </script>
+
+</body>
+</html>
